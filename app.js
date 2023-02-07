@@ -17,13 +17,14 @@ const server = http.createServer((req, res) => {
       console.log(chunk)
       body.push(chunk)
     })
-    req.on('end', () => {
+    return req.on('end', () => {
       const parsedBody = Buffer.concat(body).toString()
       const message = parsedBody.split('=')[1]
-      fs.writeFileSync('newfile.txt', message)
+      fs.writeFile('newfile.txt', message, err => {
+        res.writeHead(302, { Location: '/' })
+        return res.end()
+      })
     })
-    res.writeHead(302, { Location: '/' })
-    return res.end()
   }
   res.write('<html>')
   res.write('<head><title>Enter message</title></head>')
