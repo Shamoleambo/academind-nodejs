@@ -4,7 +4,7 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    title Shop
+    title #{docTitle}
     link(rel="stylesheet", href="/css/main.css")
     link(rel="stylesheet", href="/css/products.css")
   body 
@@ -15,4 +15,20 @@ html(lang="en")
             a.active(href="/") Shop
           li.main-header__item
             a(href="/admin/add-product") Add Product
+    main
+        if products.length > 0
+          .grid
+            each product in products
+              article.card.product-item
+                header.card__header
+                  h1.product__title #{product.title}
+                .card__image
+                  img(src="https://ichef.bbci.co.uk/news/976/cpsprodpb/16620/production/_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg")
+                .card__content
+                  h2.product__price $Free.99
+                  p.product__description A Pulitzer price winning description
+                .card__actions
+                  button.btn Add to Cart
+        else
+          h1 No Products
               
