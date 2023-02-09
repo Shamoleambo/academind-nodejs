@@ -1,0 +1,53 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>{{pageTitle}}</title>
+    <link rel='stylesheet' href='/css/main.css' />
+    <link rel='stylesheet' href='/css/product.css' />
+    <link rel='stylesheet' href='/css/forms.css' />
+  </head>
+  <body>
+    <header class='main-header'>
+      <nav class='main-header__nav'>
+        <ul class='main-header__item-list'>
+          <li class='main-header__item'>
+            <a href='/' class='active'>Shop</a>
+          </li>
+          <li class='main-header__item'>
+            <a href='/admin/add-product'>Add Product</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      {{#if hasProducts}}
+        <div class='grid'>
+          {{#each products}}
+            <article class='card product-item'>
+              <header class='card__header'>
+                <h1 class='product__title'>{{this.title}}</h1>
+              </header>
+              <div class='card__image img'>
+                <img
+                  src='https://ichef.bbci.co.uk/news/976/cpsprodpb/16620/production/_91408619_55df76d5-2245-41c1-8031-07a4da3f313f.jpg'
+                  alt='a book'
+                />
+              </div>
+              <div class='card__content'>
+                <h2 class='product__price'>$Free.99</h2>
+                <p class='product__description'>Another hit!</p>
+              </div>
+              <div class='card__actions'>
+                <button class='btn'>Add to Cart</button>
+              </div>
+            </article>
+          {{/each}}
+        </div>
+      {{else}}
+        <h1>No Products Found</h1>
+      {{/if}}
+    </main>
+  </body>
+</html>
