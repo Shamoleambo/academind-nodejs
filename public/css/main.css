@@ -145,6 +145,10 @@ form {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 }
 
+.centered {
+  text-align: center;
+}
+
 .card__header,
 .card__content {
   padding: 1rem;
