@@ -20,11 +20,26 @@ exports.getProducts = (req, res) => {
   Product.fetchAll(products => {
     res.render('shop/product-list', {
       products,
-      pageTitle: 'Shop',
-      path: '/',
+      pageTitle: 'Products',
+      path: '/products',
       hasProducts: products.length > 0,
       activeShop: true,
       productCSS: true
     })
+  })
+}
+
+exports.getShopPage = (req, res) => {
+  res.render('shop/index', { pageTitle: 'Shop', path: '/' })
+}
+
+exports.getCart = (req, res) => {
+  res.render('shop/cart', { pageTitle: 'Cart', path: '/cart' })
+}
+
+exports.getAdminProducts = (req, res) => {
+  res.render('admin/products', {
+    pageTitle: 'Admin Products',
+    path: '/admin/products'
   })
 }
