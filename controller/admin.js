@@ -3,7 +3,8 @@ const Product = require('../models/product')
 exports.getAddProduct = (req, res) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
-    path: '/admin/add-product'
+    path: '/admin/add-product',
+    editing: false
   })
 }
 
@@ -29,13 +30,19 @@ exports.getProducts = (req, res) => {
 }
 
 exports.getEditProduct = (req, res) => {
-  const editMode = req.query.edit
+  const editMode = req.query.editing
   if (!editMode) {
     return res.redirect('/')
   }
-  res.render('admin/edit-product', {
-    pageTitle: 'Edit Product',
-    path: '/admin/edit-product',
-    editing: editMode
+  const prodId = req.params.productId
+  Product.findById(prodId, product => {
+    if (!prodId) return res.redirect('/')
+
+    res.render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: '/admin/edit-product',
+      editing: editMode,
+      product
+    })
   })
 }
