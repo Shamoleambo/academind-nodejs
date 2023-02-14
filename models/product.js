@@ -37,6 +37,23 @@ module.exports = class Product {
     })
   }
 
+  static delete(id) {
+    getProductsFromFile(products => {
+      let updatedProducts = []
+      const deletedProductIndex = products.findIndex(prod => prod.id === id)
+
+      updatedProducts = [...products.slice(0, deletedProductIndex)]
+      updatedProducts = [
+        ...updatedProducts,
+        ...products.slice(deletedProductIndex + 1)
+      ]
+
+      fs.writeFile(p, JSON.stringify(updatedProducts), err => {
+        console.log(err)
+      })
+    })
+  }
+
   save() {
     getProductsFromFile(products => {
       if (this.id) {
