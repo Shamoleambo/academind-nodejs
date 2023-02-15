@@ -15,12 +15,12 @@ exports.getProducts = (req, res) => {
 
 exports.getProduct = (req, res) => {
   const prodId = req.params.productId
-  Product.findById(prodId)
-    .then(([product]) => {
+  Product.findByPk(prodId)
+    .then(product => {
       res.render('shop/product-detail', {
-        pageTitle: product[0].title,
+        pageTitle: product.title,
         path: '/products',
-        product: product[0]
+        product: product
       })
     })
     .catch(err => {
