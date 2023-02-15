@@ -51,34 +51,40 @@ exports.getEditProduct = (req, res) => {
     return res.redirect('/')
   }
   const prodId = req.params.productId
-  Product.findById(prodId, product => {
-    if (!prodId) return res.redirect('/')
+  Product.findByPk(prodId)
+    .then(product => {
+      if (!prodId) return res.redirect('/')
 
-    res.render('admin/edit-product', {
-      pageTitle: 'Edit Product',
-      path: '/admin/edit-product',
-      editing: editMode,
-      product
+      res.render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: '/admin/edit-product',
+        editing: editMode,
+        product
+      })
     })
-  })
+    .catch(err => console.log(err))
 }
 
 exports.postEditProduct = (req, res) => {
   const prodId = req.body.productId
   const updatedTitle = req.body.title
+  const updatedPrice = req.body.price
   const updatedImgUrl = req.body.imageUrl
   const updatedDescription = req.body.description
-  const updatedPrice = req.body.price
 
-  const updatedProduct = new Product(
-    prodId,
-    updatedTitle,
-    updatedImgUrl,
-    updatedDescription,
-    updatedPrice
-  )
-  updatedProduct.save()
-  res.redirect('/')
+  Product.findByPk(prodId)
+    .then(product => {
+      product.title = updatedTitle
+      product.price = updatedPrice
+      product.imageUrl = updatedImgUrl
+      product.description = updatedDescription
+      return product.save()
+    })
+    .then(result => {
+      console.log('Updated Product')
+      res.redirect('/admin/products')
+    })
+    .catch(err => console.log(err))
 }
 
 exports.postDeleteProduct = (req, res) => {
