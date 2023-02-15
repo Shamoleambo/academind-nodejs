@@ -37,24 +37,19 @@ exports.getIndex = (req, res) => {
 }
 
 exports.getCart = (req, res) => {
-  Cart.getCart(cart => {
-    Product.fetchAll(products => {
-      const cartProducts = []
-      for (product of products) {
-        const cartProductData = cart.products.find(
-          prod => product.id === prod.id
-        )
-        if (cartProductData) {
-          cartProducts.push({ productData: product, qty: cartProductData.qty })
-        }
-      }
+  req.user
+    .getCart()
+    .then(cart => {
+      return cart.getProducts()
+    })
+    .then(products => {
       res.render('shop/cart', {
         pageTitle: 'Your Cart',
         path: '/cart',
-        products: cartProducts
+        products
       })
     })
-  })
+    .catch(err => console.log(err))
 }
 
 exports.postCart = (req, res) => {
