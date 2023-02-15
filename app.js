@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const errorController = require('./controller/error')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
+const sequelize = require('./utils/database')
 
 const app = express()
 
@@ -17,4 +18,11 @@ app.use('/admin', adminRoutes)
 app.use(shopRoutes)
 app.use(errorController.get404)
 
-app.listen(3000, () => console.log('Your applicaion is running on port 3000'))
+sequelize
+  .sync()
+  .then(result => {
+    app.listen(3000, () =>
+      console.log('Your applicaion is running on port 3000')
+    )
+  })
+  .catch(err => console.log(err))
