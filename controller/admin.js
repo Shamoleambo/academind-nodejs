@@ -34,13 +34,15 @@ exports.postAddProduct = (req, res) => {
 }
 
 exports.getProducts = (req, res) => {
-  Product.fetchAll(products => {
-    res.render('admin/products', {
-      products,
-      pageTitle: 'Admin Products',
-      path: '/admin/products'
+  Product.findAll()
+    .then(products => {
+      res.render('admin/products', {
+        pageTitle: 'Admin Products',
+        path: '/admin/products',
+        products
+      })
     })
-  })
+    .catch(err => console.log(err))
 }
 
 exports.getEditProduct = (req, res) => {
