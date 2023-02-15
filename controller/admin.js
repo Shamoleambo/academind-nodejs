@@ -19,18 +19,11 @@ exports.postAddProduct = (req, res) => {
     imageUrl,
     description
   })
-    .then(result => console.log('Product Created'))
+    .then(result => {
+      console.log('Product Created')
+      res.redirect('/admin/products')
+    })
     .catch(err => console.log(err))
-
-  const product = new Product(null, title, imageUrl, description, price)
-  product
-    .save()
-    .then(() => {
-      res.redirect('/')
-    })
-    .catch(err => {
-      console.log(err)
-    })
 }
 
 exports.getProducts = (req, res) => {
