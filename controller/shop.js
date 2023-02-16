@@ -108,9 +108,11 @@ exports.getOrders = (req, res) => {
 }
 
 exports.postOrder = (req, res) => {
+  let fetchedCart
   req.user
     .getCart()
     .then(cart => {
+      fetchedCart = cart
       return cart.getProducts()
     })
     .then(products => {
@@ -125,6 +127,9 @@ exports.postOrder = (req, res) => {
           )
         })
         .catch(err => console.log(err))
+    })
+    .then(result => {
+      fetchedCart.setProducts(null)
     })
     .then(result => {
       res.redirect('/orders')
