@@ -136,7 +136,3 @@ exports.postOrder = (req, res) => {
     })
     .catch(err => console.log(err))
 }
-
-exports.getCheckout = (req, res) => {
-  res.render('shop/checkout', { pageTitle: 'Checkout', path: '/checkout' })
-}
