@@ -24,3 +24,15 @@ exports.postAddProduct = (req, res) => {
     })
     .catch(err => console.log(err))
 }
+
+exports.getProducts = (req, res) => {
+  Product.fetchAll()
+    .then(products => {
+      res.render('shop/product-list', {
+        pageTitle: 'Products',
+        path: '/admin/products',
+        products
+      })
+    })
+    .catch(err => console.log(err))
+}
