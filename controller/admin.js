@@ -1,4 +1,3 @@
-const mongodb = require('mongodb')
 const Product = require('../models/product')
 
 exports.getAddProduct = (req, res) => {
@@ -63,7 +62,6 @@ exports.getEditProduct = (req, res) => {
 
 exports.postEditProduct = async (req, res) => {
   const prodId = req.body.productId
-  const objectIdProduct = new mongodb.ObjectId(prodId)
 
   const updatedTitle = req.body.title
   const updatedPrice = req.body.price
@@ -75,7 +73,7 @@ exports.postEditProduct = async (req, res) => {
     updatedPrice,
     updatedDescription,
     updatedImageUrl,
-    objectIdProduct
+    prodId
   )
 
   product
