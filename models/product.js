@@ -31,12 +31,19 @@ class Product {
     return db.collection('products').find().toArray()
   }
 
-  static findById(prodId) {
+  static findById(productId) {
     const db = getDb()
     return db
       .collection('products')
-      .find({ _id: new mongodb.ObjectId(prodId) })
+      .find({ _id: new mongodb.ObjectId(productId) })
       .next()
+  }
+
+  static deleteById(productId) {
+    const db = getDb()
+    return db
+      .collection('products')
+      .deleteOne({ _id: new mongodb.ObjectId(productId) })
   }
 }
 
