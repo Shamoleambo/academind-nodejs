@@ -28,7 +28,7 @@ exports.postAddProduct = (req, res) => {
 exports.getProducts = (req, res) => {
   Product.fetchAll()
     .then(products => {
-      res.render('shop/product-list', {
+      res.render('admin/products', {
         pageTitle: 'Products',
         path: '/admin/products',
         products
