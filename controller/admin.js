@@ -36,3 +36,26 @@ exports.getProducts = (req, res) => {
     })
     .catch(err => console.log(err))
 }
+
+exports.getEditProduct = (req, res) => {
+  const prodId = req.params.productId
+  const editing = req.query.editing
+  if(!editing) {
+    return res.redirect('/')
+  }
+  Product.findById(prodId)
+    .then(product => {
+      if(!product){
+        return res.redirect('/')
+      }
+      res.render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: null,
+        product,
+        editing
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
