@@ -84,3 +84,13 @@ exports.postEditProduct = async (req, res) => {
     })
     .catch(err => console.log(err))
 }
+
+exports.deleteProduct = (req, res) => {
+  const prodId = req.body.productId
+  Product.deleteById(prodId)
+    .then(() => {
+      console.log('Product Deleted')
+      res.redirect('/admin/products')
+    })
+    .catch(err => console.log(err))
+}
