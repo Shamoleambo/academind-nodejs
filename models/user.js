@@ -14,9 +14,10 @@ class User {
   }
 
   static findById(prodId) {
-    const userObjectId = new mongodb.ObjectId(prodId)
     const db = getDb()
-    return db.collection('users').findOne({_id: userObjectId})
+    const userObjectId = new mongodb.ObjectId(prodId)
+
+    return db.collection('users').findOne({ _id: userObjectId })
   }
 }
 
