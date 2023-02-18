@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(async (req, res, next) => {
   const user = await User.findById('63efcf0c4aecceab41d91f22')
-  req.user = user
+  req.user = new User(user.name, user.email, user.cart, user._id)
   next()
 })
 
