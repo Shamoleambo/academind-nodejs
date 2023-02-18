@@ -37,7 +37,6 @@ exports.getCart = (req, res) => {
   req.user
     .getCart()
     .then(products => {
-      console.log('\n\nproducts', products)
       res.render('shop/cart', {
         pageTitle: 'Your Cart',
         path: '/cart',
@@ -58,5 +57,18 @@ exports.postCart = (req, res) => {
     .then(result => {
       console.log(result)
       res.redirect('/cart')
+    })
+}
+
+exports.deleteCartItem = (req, res) => {
+  const prodId = req.body.productId
+  req.user
+    .deleteCartItem(prodId)
+    .then(() => {
+      console.log('Product Deleted')
+      res.redirect('/cart')
+    })
+    .catch(err => {
+      console.log(err)
     })
 }
