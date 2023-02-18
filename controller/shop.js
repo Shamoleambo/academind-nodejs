@@ -73,6 +73,21 @@ exports.deleteCartItem = (req, res) => {
     })
 }
 
+exports.getOrders = (req, res) => {
+  req.user
+    .getOrders()
+    .then(orders => {
+      res.render('shop/orders', {
+        pageTitle: 'Your Orders',
+        path: '/orders',
+        orders
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+}
+
 exports.postOrder = (req, res) => {
   req.user
     .addOrder()
