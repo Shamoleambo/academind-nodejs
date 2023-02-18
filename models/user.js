@@ -77,17 +77,26 @@ class User {
       )
   }
 
-  addOrder() {
+  async addOrder() {
     const db = getDb()
+
+    const products = await this.getCart()
+    const order = {
+      items: products,
+      user: { _id: new mongodb.ObjectId(this._id), name: this.name }
+    }
+
     return db
       .collection('orders')
-      .insertOne(this.cart)
+      .insertOne(order)
       .then(() => {
         this.cart = []
-        return db.collection('users').updateOne(
-          { _id: new mongodb.ObjectId(this._id) },
-          { $set: { cart: { items: [] } } }
-        )
+        return db
+          .collection('users')
+          .updateOne(
+            { _id: new mongodb.ObjectId(this._id) },
+            { $set: { cart: { items: [] } } }
+          )
       })
       .catch(err => {
         console.log(err)
