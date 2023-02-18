@@ -32,3 +32,14 @@ exports.getProduct = (req, res) => {
     })
     .catch(err => console.log(err))
 }
+
+exports.postCart = (req, res) => {
+  const prodId = req.body.productId
+  Product.findById(prodId)
+    .then(product => {
+      return req.user.addToCart(product)
+    })
+    .then(result => {
+      console.log(result)
+    })
+}
