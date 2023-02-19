@@ -1,13 +1,16 @@
 const path = require('path')
 const express = require('express')
+const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const dotenv = require('dotenv')
 const errorController = require('./controller/error')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
 const User = require('./models/user')
-const { mongoConnect } = require('./utils/database')
 
 const app = express()
+
+dotenv.config()
 
 app.set('view engine', 'ejs')
 app.set('views', 'views')
