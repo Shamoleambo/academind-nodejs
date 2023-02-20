@@ -30,11 +30,11 @@ app.use(errorController.get404)
 
 mongoose
   .connect(
-    `mongodb+srv://tidgomes:${process.env.DB_PASSWORD}@cluster0.gomczzm.mongodb.net/?retryWrites=true&w=majority`
+    `mongodb+srv://tidgomes:${process.env.DB_PASSWORD}@cluster0.gomczzm.mongodb.net/shop?retryWrites=true&w=majority`
   )
   .then(result => {
     console.log('Connected to the database')
-    app.listen(300)
+    app.listen(3000)
   })
   .catch(err => {
     console.log(err)
