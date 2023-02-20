@@ -26,7 +26,7 @@ exports.postAddProduct = (req, res) => {
 }
 
 exports.getProducts = (req, res) => {
-  Product.fetchAll()
+  Product.find()
     .then(products => {
       res.render('admin/products', {
         pageTitle: 'Products',
@@ -68,21 +68,22 @@ exports.postEditProduct = async (req, res) => {
   const updatedDescription = req.body.description
   const updatedImageUrl = req.body.imageUrl
 
-  const product = new Product(
-    updatedTitle,
-    updatedPrice,
-    updatedDescription,
-    updatedImageUrl,
-    prodId
-  )
+  Product.findById(prodId)
+    .then(product => {
+      product.title = updatedTitle
+      product.price = updatedPrice
+      product.description = updatedDescription
+      product.imageUrl = updatedImageUrl
 
-  product
-    .save()
-    .then(result => {
-      console.log('Product updated')
+      return product.save()
+    })
+    .then(() => {
+      console.log('Product Updated')
       res.redirect('/admin/products')
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      console.log(err)
+    })
 }
 
 exports.deleteProduct = (req, res) => {
