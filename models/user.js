@@ -52,11 +52,11 @@ userSchema.methods.getCart = function () {
   return Product.find({ _id: { $in: cartProducts } })
     .then(products => {
       return products.map(product => {
-        const index = cartProducts.indexOf(product._id.toString())
+        const productIndex = cartProducts.indexOf(product._id.toString())
 
         return {
           ...product.toObject(),
-          quantity: this.cart.items[index].quantity
+          quantity: this.cart.items[productIndex].quantity
         }
       })
     })
