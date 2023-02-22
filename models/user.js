@@ -44,27 +44,6 @@ userSchema.methods.addToCart = function (product) {
   return this.save()
 }
 
-userSchema.methods.getCart = function () {
-  const cartProducts = this.cart.items.map(product =>
-    product.productId.toString()
-  )
-
-  return Product.find({ _id: { $in: cartProducts } })
-    .then(products => {
-      return products.map(product => {
-        const productIndex = cartProducts.indexOf(product._id.toString())
-
-        return {
-          ...product.toObject(),
-          quantity: this.cart.items[productIndex].quantity
-        }
-      })
-    })
-    .catch(err => {
-      console.log(err)
-    })
-}
-
 module.exports = mongoose.model('User', userSchema)
 
 // const mongodb = require('mongodb')
