@@ -4,7 +4,12 @@ const Order = require('../models/order')
 exports.getIndex = (req, res) => {
   Product.find()
     .then(products => {
-      res.render('shop/index', { pageTitle: 'Shop', path: '/', products })
+      res.render('shop/index', {
+        pageTitle: 'Shop',
+        path: '/',
+        products,
+        isAuthenticated: null
+      })
     })
     .catch(err => console.log(err))
 }
@@ -15,7 +20,8 @@ exports.getProducts = (req, res) => {
       res.render('shop/product-list', {
         pageTitle: 'All Products',
         path: '/products',
-        products
+        products,
+        isAuthenticated: null
       })
     })
     .catch(err => console.log(err))
@@ -28,7 +34,8 @@ exports.getProduct = (req, res) => {
       res.render('shop/product-detail', {
         pageTitle: product.title,
         path: '/products',
-        product
+        product,
+        isAuthenticated: null
       })
     })
     .catch(err => console.log(err))
@@ -42,7 +49,8 @@ exports.getCart = (req, res) => {
       res.render('shop/cart', {
         pageTitle: 'Your Cart',
         path: '/cart',
-        products
+        products,
+        isAuthenticated: null
       })
     })
     .catch(err => {
@@ -81,7 +89,8 @@ exports.getOrders = (req, res) => {
       res.render('shop/orders', {
         pageTitle: 'Your Orders',
         path: '/orders',
-        orders
+        orders,
+        isAuthenticated: null
       })
     })
     .catch(err => {

@@ -4,7 +4,8 @@ exports.getAddProduct = (req, res) => {
   res.render('admin/edit-product', {
     pageTitle: 'Add Product',
     path: '/admin/add-product',
-    editing: false
+    editing: false,
+    isAuthenticated: null
   })
 }
 
@@ -14,7 +15,13 @@ exports.postAddProduct = (req, res) => {
   const description = req.body.description
   const imageUrl = req.body.imageUrl
 
-  const product = new Product({ title, price, description, imageUrl, userId: req.user })
+  const product = new Product({
+    title,
+    price,
+    description,
+    imageUrl,
+    userId: req.user
+  })
 
   product
     .save()
@@ -31,7 +38,8 @@ exports.getProducts = (req, res) => {
       res.render('admin/products', {
         pageTitle: 'Products',
         path: '/admin/products',
-        products
+        products,
+        isAuthenticated: null
       })
     })
     .catch(err => console.log(err))
@@ -52,7 +60,8 @@ exports.getEditProduct = (req, res) => {
         pageTitle: 'Edit Product',
         path: null,
         product,
-        editing
+        editing,
+        isAuthenticated: null
       })
     })
     .catch(err => {
