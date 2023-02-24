@@ -3,6 +3,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const session = require('express-session')
+const MongoDBStore = require('connect-mongodb-session')(session)
 const dotenv = require('dotenv')
 const errorController = require('./controller/error')
 const adminRoutes = require('./routes/admin')
@@ -10,9 +11,14 @@ const shopRoutes = require('./routes/shop')
 const authRoutes = require('./routes/auth')
 const User = require('./models/user')
 
-const app = express()
-
 dotenv.config()
+const MONGODB_URI = `mongodb+srv://tidgomes:${process.env.DB_PASSWORD}@cluster0.gomczzm.mongodb.net/shop?retryWrites=true&w=majority`
+
+const app = express()
+const store = new MongoDBStore({
+  uri: MONGODB_URI,
+  collection: 'sessions'
+})
 
 app.set('view engine', 'ejs')
 app.set('views', 'views')
@@ -34,7 +40,8 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store
   })
 )
 
@@ -44,9 +51,7 @@ app.use(authRoutes)
 app.use(errorController.get404)
 
 mongoose
-  .connect(
-    `mongodb+srv://tidgomes:${process.env.DB_PASSWORD}@cluster0.gomczzm.mongodb.net/shop?retryWrites=true&w=majority`
-  )
+  .connect(MONGODB_URI)
   .then(() => {
     User.findOne().then(user => {
       if (!user) {
