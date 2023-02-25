@@ -53,16 +53,6 @@ app.use(errorController.get404)
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    User.findOne().then(user => {
-      if (!user) {
-        const user = new User({
-          name: 'Test User',
-          email: 'testuser@mail.com',
-          cart: { items: [] }
-        })
-        user.save()
-      }
-    })
     console.log('Connected to the database')
     app.listen(3000)
   })
