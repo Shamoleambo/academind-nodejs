@@ -45,7 +45,7 @@ exports.getProducts = (req, res) => {
 
 exports.getEditProduct = (req, res) => {
   const prodId = req.params.productId
-  const editing = req.query.editing
+  const editing = req.query.edit
   if (!editing) {
     return res.redirect('/')
   }
