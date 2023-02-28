@@ -23,7 +23,6 @@ exports.postLogin = (req, res, next) => {
     .then(user => {
       if (!user) {
         req.flash('error', 'Invalid email or password.')
-        console.log('mano')
         return res.redirect('/login')
       }
 
