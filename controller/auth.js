@@ -46,6 +46,7 @@ exports.postLogin = (req, res, next) => {
             })
           }
 
+          req.flash('error', 'Invalid password')
           res.redirect('/login')
         })
         .catch(err => {
