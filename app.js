@@ -23,17 +23,6 @@ const store = new MongoDBStore({
 app.set('view engine', 'ejs')
 app.set('views', 'views')
 
-app.use((req, res, next) => {
-  User.findById('63f8d977cffbf8b3f87ddd7e')
-    .then(user => {
-      req.user = user
-      next()
-    })
-    .catch(err => {
-      console.log(err)
-    })
-})
-
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(

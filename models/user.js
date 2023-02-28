@@ -46,7 +46,7 @@ userSchema.methods.addToCart = function (product) {
 
 userSchema.methods.deleteProductFromCart = function (productId) {
   const updatedCartItems = this.cart.items.filter(
-    product => product._id.toString() !== productId.toString()
+    product => product.productId.toString() !== productId.toString()
   )
 
   this.cart.items = updatedCartItems

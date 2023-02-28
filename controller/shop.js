@@ -75,8 +75,8 @@ exports.postCart = async (req, res) => {
 exports.deleteCartItem = (req, res) => {
   const prodId = req.body.productId
   User.findById(req.session.user._id)
-    .deleteProductFromCart(prodId)
-    .then(() => {
+    .then(async user => {
+      await user.deleteProductFromCart(prodId)
       console.log('Product Deleted')
       res.redirect('/cart')
     })
