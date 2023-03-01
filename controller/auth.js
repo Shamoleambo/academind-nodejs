@@ -43,7 +43,7 @@ exports.postLogin = (req, res, next) => {
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
-    res
+    return res
       .status(422)
       .render('auth/login', {
         path: '/login',
