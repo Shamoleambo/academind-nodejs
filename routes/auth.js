@@ -13,7 +13,7 @@ router.get('/signup', authController.getSignup)
 router.post(
   '/login',
   [
-    check('email').isEmail().withMessage('Invalid email or password.'),
+    check('email').isEmail().withMessage('Invalid email'),
     check(
       'password',
       'The password consists of numbers and letters only and has 5 characters long minimum'
