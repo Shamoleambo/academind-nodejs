@@ -1,5 +1,9 @@
 const bcrypt = require('bcryptjs')
+const dotenv = require('dotenv')
 const User = require('../models/user')
+const createTransport = require('../utils/createTransport')
+
+dotenv.config()
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash('error')
@@ -88,8 +92,18 @@ exports.postSignup = (req, res, next) => {
           })
           return newUser.save()
         })
-        .then(() => {
+        .then(async () => {
           res.redirect('/login')
+          const transport = await createTransport()
+          return transport.sendMail({
+            from: `Test Mail <${process.env.MAIL}>`,
+            to: email,
+            subject: 'Signup succeeded!',
+            html: '<h1>You successfully signed up!</h1>'
+          })
+        })
+        .catch(err => {
+          console.log(err)
         })
     })
     .catch(err => {
