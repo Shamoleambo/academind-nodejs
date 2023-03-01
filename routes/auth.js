@@ -13,13 +13,14 @@ router.get('/signup', authController.getSignup)
 router.post(
   '/login',
   [
-    check('email').isEmail().withMessage('Invalid email'),
+    check('email').isEmail().withMessage('Invalid email').normalizeEmail(),
     check(
       'password',
       'The password consists of numbers and letters only and has 5 characters long minimum'
     )
       .isAlphanumeric()
       .isLength({ min: 5 })
+      .trim()
   ],
   authController.postLogin
 )
@@ -36,20 +37,24 @@ router.post(
             return Promise.reject('User already exists')
           }
         })
-      }),
+      })
+      .normalizeEmail(),
     body(
       'password',
       'Please insert a password with at least 5 characters long of only numbers and letters'
     )
       .isLength({ min: 5 })
-      .isAlphanumeric(),
-    body('confirmPassword').custom((value, { req }) => {
-      if (value !== req.body.password) {
-        throw new Error("Passwords don't match")
-      }
+      .isAlphanumeric()
+      .trim(),
+    body('confirmPassword')
+      .custom((value, { req }) => {
+        if (value !== req.body.password) {
+          throw new Error("Passwords don't match")
+        }
 
-      return true
-    })
+        return true
+      })
+      .trim()
   ],
   authController.postSignup
 )
