@@ -76,48 +76,35 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
   const email = req.body.email
   const password = req.body.password
-  const confirmPassword = req.body.confirmPassword
   const errors = validationResult(req)
 
   if (!errors.isEmpty()) {
-    return res
-      .status(422)
-      .render('auth/signup', {
-        path: '/signup',
-        pageTitle: 'Signup',
-        errorMessage: errors.array()[0].msg
-      })
+    return res.status(422).render('auth/signup', {
+      path: '/signup',
+      pageTitle: 'Signup',
+      errorMessage: errors.array()[0].msg
+    })
   }
 
-  User.findOne({ email })
-    .then(user => {
-      if (user) {
-        req.flash('error', 'User already exists')
-        return res.redirect('/signup')
-      }
-      return bcrypt
-        .hash(password, 12)
-        .then(hashedPassword => {
-          const newUser = new User({
-            email,
-            password: hashedPassword,
-            cart: { items: [] }
-          })
-          return newUser.save()
-        })
-        .then(async () => {
-          res.redirect('/login')
-          const transport = await createTransport()
-          return transport.sendMail({
-            from: `Test Mail <${process.env.MAIL}>`,
-            to: email,
-            subject: 'Signup succeeded!',
-            html: '<h1>You successfully signed up!</h1>'
-          })
-        })
-        .catch(err => {
-          console.log(err)
-        })
+  bcrypt
+    .hash(password, 12)
+    .then(hashedPassword => {
+      const newUser = new User({
+        email,
+        password: hashedPassword,
+        cart: { items: [] }
+      })
+      return newUser.save()
+    })
+    .then(async () => {
+      res.redirect('/login')
+      const transport = await createTransport()
+      return transport.sendMail({
+        from: `Test Mail <${process.env.MAIL}>`,
+        to: email,
+        subject: 'Signup succeeded!',
+        html: '<h1>You successfully signed up!</h1>'
+      })
     })
     .catch(err => {
       console.log(err)
