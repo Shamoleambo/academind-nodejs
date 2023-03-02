@@ -27,7 +27,7 @@ const fileStorage = multer.diskStorage({
 })
 const fileFilter = (req, file, cb) => {
   if (
-    file.mimeType === 'image/png' ||
+    file.mimetype === 'image/png' ||
     file.mimetype === 'image/jpeg' ||
     file.mimetype === 'image/jpg'
   ) {
@@ -95,7 +95,8 @@ app.use((error, req, res, next) => {
   res.status(500).render('500', {
     pageTitle: 'Error',
     path: '/500',
-    isAuthenticated: req.session.isLoggedIn
+    isAuthenticated: req.session.isLoggedIn,
+    csrfToken: ''
   })
 })
 
