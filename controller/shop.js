@@ -11,7 +11,11 @@ exports.getIndex = (req, res) => {
         products
       })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.getProducts = (req, res) => {
@@ -23,7 +27,11 @@ exports.getProducts = (req, res) => {
         products
       })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.getProduct = (req, res) => {
@@ -36,7 +44,11 @@ exports.getProduct = (req, res) => {
         product
       })
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.getCart = (req, res) => {
@@ -51,7 +63,9 @@ exports.getCart = (req, res) => {
       })
     })
     .catch(err => {
-      console.log(err)
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
     })
 }
 
@@ -66,6 +80,11 @@ exports.postCart = async (req, res) => {
       console.log(result)
       res.redirect('/cart')
     })
+    .catch(err => {
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
+    })
 }
 
 exports.deleteCartItem = (req, res) => {
@@ -77,7 +96,9 @@ exports.deleteCartItem = (req, res) => {
       res.redirect('/cart')
     })
     .catch(err => {
-      console.log(err)
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
     })
 }
 
@@ -91,7 +112,9 @@ exports.getOrders = (req, res) => {
       })
     })
     .catch(err => {
-      console.log(err)
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
     })
 }
 
@@ -120,6 +143,8 @@ exports.postOrder = async (req, res) => {
       res.redirect('/orders')
     })
     .catch(err => {
-      console.log(err)
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      return next(error)
     })
 }
