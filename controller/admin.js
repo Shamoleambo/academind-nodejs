@@ -45,7 +45,9 @@ exports.postAddProduct = (req, res) => {
       console.log('Product Created')
       res.redirect('/admin/products')
     })
-    .catch(err => console.log(err))
+    .catch(err => {
+      res.redirect('/500')
+    })
 }
 
 exports.getProducts = (req, res) => {
