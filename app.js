@@ -2,6 +2,7 @@ const path = require('path')
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const multer = require('multer')
 const session = require('express-session')
 const MongoDBStore = require('connect-mongodb-session')(session)
 const csrf = require('csurf')
@@ -16,6 +17,26 @@ const User = require('./models/user')
 dotenv.config()
 const MONGODB_URI = `mongodb+srv://tidgomes:${process.env.DB_PASSWORD}@cluster0.gomczzm.mongodb.net/shop?retryWrites=true&w=majority`
 
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images')
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().getTime() + '-' + file.originalname)
+  }
+})
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimeType === 'image/png' ||
+    file.mimetype === 'image/jpeg' ||
+    file.mimetype === 'image/jpg'
+  ) {
+    cb(null, true)
+  } else {
+    cb(null, false)
+  }
+}
+
 const app = express()
 const store = new MongoDBStore({
   uri: MONGODB_URI,
@@ -27,6 +48,7 @@ app.set('view engine', 'ejs')
 app.set('views', 'views')
 
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(multer({ storage: fileStorage, fileFilter }).single('image'))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(
   session({
@@ -70,13 +92,11 @@ app.use('/500', errorController.get500)
 app.use(errorController.get404)
 
 app.use((error, req, res, next) => {
-  res
-    .status(500)
-    .render('500', {
-      pageTitle: 'Error',
-      path: '/500',
-      isAuthenticated: req.session.isLoggedIn
-    })
+  res.status(500).render('500', {
+    pageTitle: 'Error',
+    path: '/500',
+    isAuthenticated: req.session.isLoggedIn
+  })
 })
 
 mongoose
