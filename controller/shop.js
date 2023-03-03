@@ -178,6 +178,30 @@ exports.postOrder = async (req, res) => {
     })
 }
 
+exports.getCheckout = (req, res, next) => {
+  let totalAmount = 0
+  req.user
+    .populate('cart.items.productId')
+    .then(user => {
+      const products = user.cart.items
+      products.forEach(item => {
+        totalAmount += item.productId.price * item.quantity
+      })
+      res.render('shop/checkout', {
+        path: '/checkout',
+        pageTitle: 'Checkout',
+        products,
+        totalAmount
+      })
+    })
+    .catch(err => {
+      console.log(err)
+      const error = new Error(err)
+      error.httpStatusCode = 500
+      next(error)
+    })
+}
+
 exports.getInvoice = (req, res, next) => {
   const orderId = req.params.orderId
   Order.findById(orderId)
