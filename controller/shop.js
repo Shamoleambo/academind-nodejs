@@ -11,7 +11,6 @@ exports.getIndex = async (req, res, next) => {
   const currentPage = parseInt(req.query.page) || 1
   const totalProducts = await Product.find().countDocuments()
   lastPage = Math.ceil(totalProducts / ITEMS_PER_PAGE)
-  const url = req.url.split('/?')[0]
 
   Product.find()
     .skip((currentPage - 1) * ITEMS_PER_PAGE)
@@ -26,8 +25,7 @@ exports.getIndex = async (req, res, next) => {
         previousPage: currentPage - 1,
         lastPage,
         hasNextPage: currentPage + 1 < lastPage,
-        hasPreviousPage: currentPage - 1 > 0,
-        url
+        hasPreviousPage: currentPage - 1 > 0
       })
     })
     .catch(err => {
@@ -41,7 +39,6 @@ exports.getProducts = async (req, res, next) => {
   const currentPage = parseInt(req.query.page) || 1
   const totalProducts = await Product.find().countDocuments()
   lastPage = Math.ceil(totalProducts / ITEMS_PER_PAGE)
-  const url = req.url.split('/?')[0]
 
   Product.find()
     .skip((currentPage - 1) * ITEMS_PER_PAGE)
@@ -56,8 +53,7 @@ exports.getProducts = async (req, res, next) => {
         previousPage: currentPage - 1,
         lastPage,
         hasNextPage: currentPage + 1 < lastPage,
-        hasPreviousPage: currentPage - 1 > 0,
-        url
+        hasPreviousPage: currentPage - 1 > 0
       })
     })
     .catch(err => {

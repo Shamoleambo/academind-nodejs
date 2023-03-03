@@ -1,15 +1,15 @@
 <section class="pagination">
   <% if (previousPage !== 1 && currentPage !== 1) { %>
-      <a href="<%= url.length > 1 ? url : '' %>/?page=1">1</a>
+      <a href="?page=1">1</a>
   <% } %>
   <% if (hasPreviousPage) { %>
-      <a href="<%= url.length > 1 ? url : '' %>/?page=<%= previousPage %>"><%= previousPage %></a>
+      <a href="?page=<%= previousPage %>"><%= previousPage %></a>
   <% } %>
-  <a href="<%= url.length > 1 ? url : '' %>/?page=<%= currentPage %>" class="active"><%= currentPage %></a>
+  <a href="?page=<%= currentPage %>" class="active"><%= currentPage %></a>
   <% if (hasNextPage) { %>
-      <a href="<%= url.length > 1 ? url : '' %>/?page=<%= nextPage %>"><%= nextPage %></a>
+      <a href="?page=<%= nextPage %>"><%= nextPage %></a>
   <% } %>
   <% if (currentPage !== lastPage) { %>
-      <a href="<%= url.length > 1 ? url : '' %>/?page=<%= lastPage %>"><%= lastPage %></a>
+      <a href="?page=<%= lastPage %>"><%= lastPage %></a>
   <% } %>
 </section>
