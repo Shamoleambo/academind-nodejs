@@ -5,7 +5,7 @@ const Product = require('../models/product')
 const User = require('../models/user')
 const Order = require('../models/order')
 
-const ITEMS_PER_PAGE = 2
+const ITEMS_PER_PAGE = 3
 
 exports.getIndex = async (req, res, next) => {
   const page = parseInt(req.query.page) || 1
@@ -34,13 +34,25 @@ exports.getIndex = async (req, res, next) => {
     })
 }
 
-exports.getProducts = (req, res) => {
+exports.getProducts = async (req, res, next) => {
+  const currentPage = parseInt(req.query.page) || 1
+  const totalProducts = await Product.find().countDocuments()
+  lastPage = Math.ceil(totalProducts / ITEMS_PER_PAGE)
+
   Product.find()
+    .skip((currentPage - 1) * ITEMS_PER_PAGE)
+    .limit(ITEMS_PER_PAGE)
     .then(products => {
       res.render('shop/product-list', {
         pageTitle: 'All Products',
         path: '/products',
-        products
+        products,
+        currentPage,
+        nextPage: currentPage + 1,
+        previousPage: currentPage - 1,
+        lastPage,
+        hasNextPage: currentPage + 1 < lastPage,
+        hasPreviousPage: currentPage - 1 > 0
       })
     })
     .catch(err => {
