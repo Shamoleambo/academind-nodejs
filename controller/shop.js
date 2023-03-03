@@ -1,9 +1,13 @@
 const fs = require('fs')
 const path = require('path')
 const PDFDocument = require('pdfkit')
+const dotenv = require('dotenv')
 const Product = require('../models/product')
 const User = require('../models/user')
 const Order = require('../models/order')
+
+dotenv.config()
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 const ITEMS_PER_PAGE = 3
 
@@ -179,19 +183,44 @@ exports.postOrder = async (req, res) => {
 }
 
 exports.getCheckout = (req, res, next) => {
+  let products
   let totalAmount = 0
   req.user
     .populate('cart.items.productId')
     .then(user => {
-      const products = user.cart.items
+      products = user.cart.items
       products.forEach(item => {
         totalAmount += item.productId.price * item.quantity
       })
+
+      return stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'payment',
+        line_items: products.map(prod => {
+          return {
+            quantity: prod.quantity,
+            price_data: {
+              currency: 'usd',
+              unit_amount: prod.productId.price * 100,
+              product_data: {
+                name: prod.productId.title,
+                description: prod.productId.description
+              }
+            }
+          }
+        }),
+        customer_email: req.user.email,
+        success_url: `${req.protocol}://${req.get('host')}/checkout/success`,
+        cancel_url: `${req.protocol}://${req.get('host')}/checkout/cancel`
+      })
+    })
+    .then(session => {
       res.render('shop/checkout', {
         path: '/checkout',
         pageTitle: 'Checkout',
         products,
-        totalAmount
+        totalAmount,
+        sessionId: session.id
       })
     })
     .catch(err => {
