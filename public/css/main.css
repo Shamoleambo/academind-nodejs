@@ -242,9 +242,28 @@ form {
   text-align: center;
 }
 
-.user-message--error{
+.user-message--error {
   border-color: red;
   background-color: rgb(249, 156, 156);
+}
+
+.pagination {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.pagination a {
+  text-decoration: none;
+  color: rgb(0, 122, 0);
+  padding: 0.5rem;
+  border: 1px solid green;
+  margin: 0 1rem;
+}
+
+.pagination a:hover,
+.pagination a:active {
+  background: green;
+  color: white;
 }
 
 @media (min-width: 768px) {
@@ -257,6 +276,6 @@ form {
   }
 
   .user-message {
-    width: 30rem; 
+    width: 30rem;
   }
 }
