@@ -5,8 +5,13 @@ const Product = require('../models/product')
 const User = require('../models/user')
 const Order = require('../models/order')
 
+const ITEMS_PER_PAGE = 2
+
 exports.getIndex = (req, res) => {
+  const page = req.query.page
   Product.find()
+    .skip((page - 1) * ITEMS_PER_PAGE)
+    .limit(ITEMS_PER_PAGE)
     .then(products => {
       res.render('shop/index', {
         pageTitle: 'Shop',
