@@ -8,23 +8,26 @@ const Order = require('../models/order')
 const ITEMS_PER_PAGE = 3
 
 exports.getIndex = async (req, res, next) => {
-  const page = parseInt(req.query.page) || 1
+  const currentPage = parseInt(req.query.page) || 1
   const totalProducts = await Product.find().countDocuments()
+  lastPage = Math.ceil(totalProducts / ITEMS_PER_PAGE)
+  const url = req.url.split('/?')[0]
 
   Product.find()
-    .skip((page - 1) * ITEMS_PER_PAGE)
+    .skip((currentPage - 1) * ITEMS_PER_PAGE)
     .limit(ITEMS_PER_PAGE)
     .then(products => {
       res.render('shop/index', {
         pageTitle: 'Shop',
         path: '/',
         products,
-        currentPage: page,
-        hasNextPage: ITEMS_PER_PAGE * page < totalProducts,
-        hasPreviousPage: page > 1,
-        nextPage: page + 1,
-        previousPage: page - 1,
-        lastPage: Math.ceil(totalProducts / ITEMS_PER_PAGE)
+        currentPage,
+        nextPage: currentPage + 1,
+        previousPage: currentPage - 1,
+        lastPage,
+        hasNextPage: currentPage + 1 < lastPage,
+        hasPreviousPage: currentPage - 1 > 0,
+        url
       })
     })
     .catch(err => {
@@ -38,6 +41,7 @@ exports.getProducts = async (req, res, next) => {
   const currentPage = parseInt(req.query.page) || 1
   const totalProducts = await Product.find().countDocuments()
   lastPage = Math.ceil(totalProducts / ITEMS_PER_PAGE)
+  const url = req.url.split('/?')[0]
 
   Product.find()
     .skip((currentPage - 1) * ITEMS_PER_PAGE)
@@ -52,7 +56,8 @@ exports.getProducts = async (req, res, next) => {
         previousPage: currentPage - 1,
         lastPage,
         hasNextPage: currentPage + 1 < lastPage,
-        hasPreviousPage: currentPage - 1 > 0
+        hasPreviousPage: currentPage - 1 > 0,
+        url
       })
     })
     .catch(err => {
