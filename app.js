@@ -8,6 +8,7 @@ const MongoDBStore = require('connect-mongodb-session')(session)
 const csrf = require('csurf')
 const flash = require('connect-flash')
 const dotenv = require('dotenv')
+const helmet = require('helmet')
 const errorController = require('./controller/error')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
@@ -46,6 +47,8 @@ const csrfProtection = csrf()
 
 app.set('view engine', 'ejs')
 app.set('views', 'views')
+
+app.use(helmet())
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(multer({ storage: fileStorage, fileFilter }).single('image'))
